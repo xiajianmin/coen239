@@ -16,9 +16,6 @@ int dGraph[V][V] = {
 		{inf, inf, inf, 9, inf, inf},
 	};
 
-// d = {0, 1, 2, 3, 4, 5}
-// p = {0, 1, 1, 3, 3, 4}
-
 int top = 0; // keep track of the top element of stack
 int end = 0; // keep track of the end element of stack
 
@@ -43,6 +40,9 @@ int pop(int stack[]) {
 	return ret;
 }
 
+/**
+ *	Helper function to print distance
+ */
 void printDistance(int d[]) {
 	int i;
 	printf("Distance: (");
@@ -55,6 +55,9 @@ void printDistance(int d[]) {
 	}
 }
 
+/**
+ *	Helper function to print precedence
+ */
 void printPrevious(int p[]) {
 	int i;
 	printf("Precedence: (");
@@ -67,10 +70,17 @@ void printPrevious(int p[]) {
 	}
 }
 
-void printUnvisited(int p[]) {
+/**
+ *	Helper function to print unvisited vertices
+ */
+void printUnvisited(int p[], int cur) {
 	int i;
 	printf("Unvisited: (");
-	for (i=0; i<V; i++) {
+	if (cur >= V) {
+		printf(")\n");
+		return;
+	}
+	for (i=cur; i<V; i++) {
 		if (i == V-1) {
 			printf("%d)\n", p[i]+1);
 			break;
@@ -92,13 +102,13 @@ void dijkstra(int graph[][V], int src) {
 
 	// push source vertices to stack
 	push(unvisited, src);
-	printf("INITIAL VALUE\n");
+	printf("Initial Value\n");
 	printDistance(distance);
 	printPrevious(prev);
-	printUnvisited(unvisited);
-	while (top != V) {
+	printUnvisited(unvisited, src);
+	while (top < V) {
 		cur = pop(unvisited);
-		printf("Iteration %d\n", cur);
+		printf("\nIteration %d\n", cur+1);
 		// checking distance between vertices
 		for (i=cur; i<V; i++) {
 			// if self
@@ -124,12 +134,12 @@ void dijkstra(int graph[][V], int src) {
 		}
 		printDistance(distance);
 		printPrevious(prev);
-		printUnvisited(unvisited);
+		printUnvisited(unvisited, cur+1);
 	}
 }
 
 /**
- *
+ *	
  */
 int main(int argc, char **argv)
 {
